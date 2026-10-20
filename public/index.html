@@ -1,1 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NIXQUANT MARKETS - Trading Hub</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<style>
+body{font-family:Inter,sans-serif;background:#070d1e;color:white}
+.glass{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);backdrop-filter:blur(14px)}
+.glow-btn{background:linear-gradient(90deg,#ff3b3b,#6a5cff);box-shadow:0 0 25px rgba(255,59,59,.35)}
+.loader-bar{background:linear-gradient(90deg,#10b981,#fb7185,#a78bfa)}
+</style>
+</head>
+<body>
 
+<!-- FULL LOADER 1% to 100% -->
+<div id="loader" class="fixed inset-0 z-[999] bg-[#070d1e] flex items-center justify-center p-4">
+  <div class="glass rounded-[2.5rem] p-8 md:p-10 max-w-[430px] w-full text-center">
+    <div class="font-black text-[28px] tracking-tighter"><span class="text-emerald-400">NIX</span><span class="text-red-400">QUANT</span> MARKETS</div>
+    <div class="mt-2 flex justify-center gap-2"><span class="text-[10px] tracking-[0.35em] opacity-50">TRADING HUB</span><span class="px-3 py-1 rounded-full border border-emerald-400/30 text-emerald-300 text-[10px]">● LIVE</span></div>
+    
+    <h2 class="mt-8 font-bold text-[18px] text-left">Welcome to Nixquant Markets</h2>
+    <p class="text-left text-[13px] opacity-60">Empowering your financial journey. Connecting to Deriv server...</p>
+    
+    <div class="mt-6 h-3 bg-white/10 rounded-full overflow-hidden">
+      <div id="bar" class="loader-bar h-full w-[1%] transition-all duration-75"></div>
+    </div>
+    <div class="mt-3 flex justify-between text-[12px]">
+      <span class="opacity-60"><i class="fa-solid fa-circle-notch fa-spin mr-2"></i><span id="statusText">Initializing workspace...</span></span>
+      <span id="pct" class="font-black">1%</span>
+    </div>
+
+    <button id="enterBtn" class="hidden w-full mt-8 glow-btn py-4 rounded-full font-bold"><i class="fa-solid fa-arrow-right mr-2"></i>Enter Trading Hub - Register Now</button>
+  </div>
+</div>
+
+<!-- MAIN SITE - HIDDEN UNTIL 100% -->
+<div id="mainSite" class="hidden">
+<nav class="sticky top-0 z-50 bg-[#070d1e]/90 backdrop-blur-xl border-b border-white/5 px-6 py-4 flex justify-between">
+  <b class="text-sm"><span class="text-emerald-400">NIXQUANT</span> MARKETS</b>
+  <div class="flex gap-2">
+    <button onclick="openRegister()" class="bg-white text-black px-5 py-2 rounded-full text-sm font-bold">Register Now</button>
+    <button onclick="openLogin()" class="glass px-5 py-2 rounded-full text-sm">Login</button>
+  </div>
+</nav>
+
+<!-- REGISTER MODAL -->
+<div id="registerModal" class="fixed inset-0 z-[100] bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+  <div class="glass rounded-[2rem] p-8 max-w-md w-full">
+    <div class="flex justify-between items-center"><h3 class="font-bold text-xl">Create Account</h3><button onclick="closeModals()" class="w-8 h-8 bg-white/10 rounded-full"><i class="fa-solid fa-xmark"></i></button></div>
+    <input id="regName" placeholder="Full Name" class="w-full mt-6 p-3.5 rounded-xl bg-black/50 border border-white/10 text-sm outline-none">
+    <input id="regEmail" placeholder="Email Address" class="w-full mt-3 p-3.5 rounded-xl bg-black/50 border border-white/10 text-sm outline-none">
+    <input id="regPass" type="password" placeholder="Password" class="w-full mt-3 p-3.5 rounded-xl bg-black/50 border border-white/10 text-sm outline-none">
+    <button onclick="doRegister()" class="w-full mt-5 glow-btn py-3.5 rounded-xl font-bold">Register & Start Trading →</button>
+    <p class="text-center text-[11px] opacity-50 mt-3">Already have account? <span onclick="openLogin()" class="text-sky-400 cursor-pointer">Login</span></p>
+    <div class="mt-4 pt-4 border-t border-white/10">
+      <button onclick="loginDeriv()" class="w-full glass py-3 rounded-xl text-sm font-bold"><i class="fa-brands fa-connectdevelop mr-2"></i>Continue with Deriv OAuth</button>
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN MODAL -->
+<div id="loginModal" class="fixed inset-0 z-[100] bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+  <div class="glass rounded-[2rem] p-8 max-w-md w-full">
+    <div class="flex justify-between items-center"><h3 class="font-bold text-xl">Welcome Back</h3><button onclick="closeModals()" class="w-8 h-8 bg-white/10 rounded-full"><i class="fa-solid fa-xmark"></i></button></div>
+    <input id="logEmail" placeholder="Email" class="w-full mt-6 p-3.5 rounded-xl bg-black/50 border border-white/10 text-sm outline-none">
+    <input id="logPass" type="password" placeholder="Password" class="w-full mt-3 p-3.5 rounded-xl bg-black/50 border border-white/10 text-sm outline-none">
+    <button onclick="doLogin()" class="w-full mt-5 bg-white text-black py-3.5 rounded-xl font-bold">Login Now</button>
+    <p class="text-center text-[11px] opacity-50 mt-3">Or login with token</p>
+    <input id="tokenInput" placeholder="Paste Deriv API Token" class="w-full mt-3 p-3.5 rounded-xl bg-black/50 border border-white/10 text-sm outline-none">
+    <button onclick="loginWithToken()" class="w-full mt-3 glass py-3 rounded-xl text-sm font-bold">Connect with Token</button>
+  </div>
+</div>
+
+<section class="text-center px-6 pt-12 pb-10 max-w-5xl mx-auto">
+  <div class="inline-flex glass px-4 py-1.5 rounded-full text-[11px]">⚡ Your connected trading workspace</div>
+  <h1 class="mt-6 text-[48px] md:text-[68px] font-black leading-[0.85]">Trade smarter,<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-violet-400">not harder</span></h1>
+  <p class="mt-4 opacity-60 max-w-md mx-auto">Automate repetitive strategies while keeping your session limits in view.</p>
+  <div class="mt-8 flex justify-center gap-3 flex-wrap">
+    <button onclick="openRegister()" class="glow-btn px-8 py-3.5 rounded-full font-bold">Start Trading Now →</button>
+    <button onclick="openLogin()" class="glass px-7 py-3.5 rounded-full font-bold">Existing Account Login</button>
+  </div>
+</section>
+
+<section class="px-6 max-w-5xl mx-auto grid md:grid-cols-2 gap-4 pb-20">
+  <div class="glass rounded-3xl p-6"><h3 class="font-bold">🤖 AI-Powered Trading Bots - 85</h3><p class="text-xs opacity-60 mt-2">Configure strategies, inspect logic</p></div>
+  <div class="glass rounded-3xl p-6"><h3 class="font-bold">📊 Real-Time Analysis - 5 Views</h3><p class="text-xs opacity-60 mt-2">Charts, digits, market history</p></div>
+  <div class="glass rounded-3xl p-6"><h3 class="font-bold">Copy Trading Network</h3><p class="text-xs opacity-60 mt-2">Authorized accounts only</p></div>
+  <div class="glass rounded-3xl p-6"><h3 class="font-bold">Risk Management</h3><p class="text-xs opacity-60 mt-2">Stop-loss, take-profit, stake</p></div>
+</section>
+</div>
+
+<script>
+const APP_ID = 1089;
+let count = 1;
+const bar = document.getElementById('bar');
+const pct = document.getElementById('pct');
+const statusText = document.getElementById('statusText');
+const loader = document.getElementById('loader');
+const mainSite = document.getElementById('mainSite');
+const enterBtn = document.getElementById('enterBtn');
+
+const messages = ["Initializing workspace...","Connecting to Deriv cluster...","Loading trading bots...","Fetching market data...","Securing connection...","Ready to trade!"]
+
+let timer = setInterval(()=>{
+  count++;
+  bar.style.width = count + '%';
+  pct.innerText = count + '%';
+  if(count % 20 == 0){ statusText.innerText = messages[Math.floor(count/20)] }
+
+  if(count >= 100){
+    clearInterval(timer);
+    statusText.innerText = "Workspace Connected! Welcome 🎉";
+    bar.style.background = "#10b981";
+    enterBtn.classList.remove('hidden');
+    // Auto enter after 1 sec
+    setTimeout(()=>{
+      loader.style.display='none';
+      mainSite.classList.remove('hidden');
+    },1200);
+  }
+}, 35); // Speed ya loader
+
+enterBtn.onclick = ()=>{
+  loader.style.display='none';
+  mainSite.classList.remove('hidden');
+}
+
+function openRegister(){ document.getElementById('registerModal').classList.remove('hidden'); document.getElementById('registerModal').classList.add('flex'); }
+function openLogin(){ document.getElementById('loginModal').classList.remove('hidden'); document.getElementById('loginModal').classList.add('flex'); }
+function closeModals(){ document.getElementById('registerModal').classList.add('hidden'); document.getElementById('loginModal').classList.add('hidden'); }
+
+function doRegister(){
+  const name=document.getElementById('regName').value, email=document.getElementById('regEmail').value, pass=document.getElementById('regPass').value;
+  if(!name || !email || !pass){ alert('Jaza kila kitu msee!'); return }
+  localStorage.setItem('nix_user', JSON.stringify({name,email}));
+  alert('Account Created! Redirecting to Deriv...');
+  loginDeriv();
+}
+function doLogin(){
+  const email=document.getElementById('logEmail').value, pass=document.getElementById('logPass').value;
+  if(!email || !pass){ alert('Weka email na password'); return }
+  alert('Logged In! Connecting...');
+  loginDeriv();
+}
+function loginDeriv(){
+  window.location.href = `https://oauth.deriv.com/oauth2/authorize?app_id=${APP_ID}`;
+}
+function loginWithToken(){
+  const t=document.getElementById('tokenInput').value.trim();
+  if(t.length<15){ alert('Token ni fupi msee'); return }
+  localStorage.setItem('deriv_token', t);
+  alert('Token Connected! Going to Dashboard...');
+  window.location.href = '/dashboard.html';
+}
+</script>
+</body>
+</html>

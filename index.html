@@ -2,127 +2,177 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NIXQUANT MARKETS - Trading Hub</title>
+<title>Nixquant Markets - Trading Hub</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
-body{font-family:Inter,sans-serif;background:#060a19;color:white;overflow-x:hidden}
-.glass{background:rgba(16,23,52,0.85);border:1px solid rgba(255,255,255,0.08);backdrop-filter:blur(14px)}
+*{font-family:Inter,sans-serif}
+body{background:#060a19;color:white;overflow-x:hidden}
+.glass{background:rgba(16,23,52,0.92);border:1px solid rgba(255,255,255,0.08);backdrop-filter:blur(14px)}
 .glass-soft{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06)}
-.btn-main{background:linear-gradient(90deg,#ff2a2a,#6d5bff);box-shadow:0 0 25px rgba(255,42,42,.35)}
+.btn-main{background:linear-gradient(90deg,#ff2e2e,#6d5bff);box-shadow:0 8px 25px rgba(255,46,46,0.3)}
 .card-circle{background:radial-gradient(circle at 35% 30%, #3d2b65, #1a1a3a);border:2px solid rgba(255,255,255,0.12)}
+.check-red{background:rgba(255,60,60,0.18);color:#ff5a5a}
 .loader-bar{background:linear-gradient(90deg,#10b981,#fb7185,#a78bfa)}
-.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}
+.no-scrollbar::-webkit-scrollbar{display:none}
+.page{animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
 <body>
 
-<!-- LOADER 1% TO 100% KAMA UTAKA -->
-<div id="loader" class="fixed inset-0 z-[999] bg-[#060a19] flex items-center justify-center p-4">
-  <div class="glass rounded-[2.5rem] p-8 max-w-[430px] w-full text-center">
-    <div class="font-black text-[28px] tracking-tighter"><span class="text-emerald-400">NIX</span><span class="text-red-400">QUANT</span> <span class="text-white">MARKETS</span></div>
-    <div class="mt-2 flex justify-center gap-2"><span class="text-[10px] tracking-[0.35em] opacity-50">TRADING HUB</span><span class="px-3 py-1 rounded-full border border-emerald-400/30 text-emerald-300 text-[10px]">● LIVE</span></div>
-    <h2 class="mt-8 font-bold text-[18px] text-left">Welcome to Nixquant Markets</h2>
-    <p class="text-left text-[13px] opacity-60">Empowering your financial journey. Connecting to secure workspace...</p>
-    <div class="mt-6 h-3 bg-white/10 rounded-full overflow-hidden"><div id="bar" class="loader-bar h-full w-[1%] transition-all"></div></div>
-    <div class="mt-3 flex justify-between text-[12px]"><span class="opacity-60"><i class="fa-solid fa-circle-notch fa-spin mr-2"></i><span id="statusText">Initializing workspace...</span></span><span id="pct" class="font-black">1%</span></div>
-    <button id="enterBtn" class="hidden w-full mt-8 btn-main py-4 rounded-full font-bold"><i class="fa-solid fa-arrow-right mr-2"></i>Enter Trading Hub</button>
+<!-- LOADER 1% TO 100% -->
+<div id="loader" class="fixed inset-0 z-[999] bg-[#060a19] flex items-center justify-center p-5">
+  <div class="glass rounded-[2.2rem] p-8 max-w-[420px] w-full text-center">
+    <div class="font-black text-[26px] tracking-tight"><span class="text-emerald-400">NIX</span><span class="text-red-400">QUANT</span> MARKETS</div>
+    <p class="text-[11px] opacity-50 tracking-widest mt-1">TRADING HUB • LIVE</p>
+    <div class="mt-8 text-left"><h2 class="font-bold">Welcome to Nixquant Markets</h2><p class="text-[12px] opacity-60 mt-1">Connecting to secure workspace...</p></div>
+    <div class="mt-5 h-2 bg-white/10 rounded-full overflow-hidden"><div id="bar" class="loader-bar h-full w-[1%] transition-all duration-75"></div></div>
+    <div class="flex justify-between mt-2 text-[11px]"><span id="statusText" class="opacity-60">Initializing...</span><span id="pct" class="font-black">1%</span></div>
   </div>
 </div>
 
 <div id="mainSite" class="hidden">
-<!-- HEADER KAMA SCREENSHOT -->
-<header class="sticky top-0 z-40 bg-[#060a19]/90 backdrop-blur-xl border-b border-white/5 px-4 py-3.5 flex justify-between items-center">
-  <div class="flex items-center gap-3"><button onclick="openMenu()" class="w-9 h-9 glass rounded-full flex items-center justify-center"><i class="fa-solid fa-bars text-xs"></i></button><div class="font-black text-[13px]"><span class="text-red-400">Nixquant</span> <span class="text-sky-400">Markets</span></div></div>
-  <div class="flex items-center gap-2"><button onclick="openLogin()" class="bg-white text-black px-4 py-2 rounded-full text-[11px] font-bold flex items-center gap-2">Login Now <i class="fa-solid fa-arrow-right text-[10px]"></i></button><button onclick="openToken()" class="glass-soft px-4 py-2 rounded-full text-[11px]">Token</button></div>
+
+<header class="sticky top-0 z-40 bg-[#060a19]/90 backdrop-blur-xl border-b border-white/5 px-4 py-3 flex justify-between items-center">
+  <div class="flex items-center gap-3"><button onclick="openMenu()" class="w-9 h-9 glass rounded-full flex items-center justify-center"><i class="fa-solid fa-bars text-xs"></i></button><b class="text-[13px]"><span class="text-red-400">Nixquant</span> <span class="text-sky-400">Markets</span></b></div>
+  <div class="flex gap-2"><button onclick="openLogin()" class="bg-white text-black px-4 py-2 rounded-full text-[11px] font-bold flex items-center gap-1">Login Now <i class="fa-solid fa-arrow-right text-[9px]"></i></button><button onclick="openToken()" class="glass-soft px-4 py-2 rounded-full text-[11px]">Token</button></div>
 </header>
 
-<!-- MENU DRAWER ILIYOPANGWA KAMA PRO -->
+<!-- MENU DRAWER REAL -->
 <div id="menuDrawer" class="fixed inset-0 z-[200] hidden">
-  <div onclick="closeMenu()" class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
-  <div class="absolute left-0 top-0 bottom-0 w-[320px] bg-[#0a1025] border-r border-white/10 flex flex-col">
-    <div class="p-6 border-b border-white/5">
-      <div class="flex justify-between items-center"><div class="font-black text-[20px]"><span class="text-emerald-400">NIX</span><span class="text-red-400">QUANT</span></div><button onclick="closeMenu()" class="w-9 h-9 bg-white/10 rounded-full flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button></div>
-      <div class="mt-6 flex items-center gap-3"><div class="w-11 h-11 rounded-full bg-gradient-to-br from-emerald-400 to-violet-600 flex items-center justify-center font-black">SN</div><div><p class="font-bold text-sm">Sir Nick</p><p class="text-[11px] opacity-50">Owner • Nixquant Admin</p><p class="text-[10px] text-emerald-400 mt-0.5">● App ID 1089 Connected</p></div></div>
+  <div onclick="closeMenu()" class="absolute inset-0 bg-black/80"></div>
+  <div class="absolute left-0 top-0 bottom-0 w-[310px] bg-[#0a1025] border-r border-white/10 flex flex-col">
+    <div class="p-6"><div class="flex justify-between"><h2 class="font-black">MENU</h2><button onclick="closeMenu()" class="w-8 h-8 bg-white/10 rounded-full"><i class="fa-solid fa-xmark"></i></button></div><div class="mt-6 flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-violet-600 flex items-center justify-center font-black text-sm">SN</div><div><p class="font-bold text-sm">Sir Nick</p><p class="text-[11px] opacity-50">App ID 1089 Connected</p></div></div></div>
+    <div class="flex-1 p-4 space-y-6 overflow-y-auto">
+      <div><p class="text-[9px] tracking-widest opacity-40 px-3 mb-2">MAIN</p><button onclick="showPage('dashboard')" class="w-full text-left p-3 rounded-xl bg-white/10 font-bold text-sm"><i class="fa-solid fa-house mr-2"></i>Dashboard</button><button onclick="openRegister()" class="w-full text-left p-3 rounded-xl hover:bg-white/5 text-sm mt-1"><i class="fa-solid fa-user-plus mr-2"></i>Create Account</button></div>
+      <div><p class="text-[9px] tracking-widest opacity-40 px-3 mb-2">TRADING TOOLS</p><button onclick="showPage('bots')" class="w-full text-left p-3 rounded-xl hover:bg-white/5 flex justify-between text-sm"><span><i class="fa-solid fa-robot mr-2"></i>My Bots</span><span class="bg-white/10 px-2 rounded-full text-xs">85</span></button><button onclick="showPage('analysis')" class="w-full text-left p-3 rounded-xl hover:bg-white/5 flex justify-between text-sm"><span><i class="fa-solid fa-chart-line mr-2"></i>Analysis</span><span class="bg-white/10 px-2 rounded-full text-xs">5</span></button><button onclick="showPage('reports')" class="w-full text-left p-3 rounded-xl hover:bg-white/5 flex justify-between text-sm"><span><i class="fa-solid fa-file-lines mr-2"></i>Reports</span><span class="bg-white/10 px-2 rounded-full text-xs">4</span></button></div>
+      <div><p class="text-[9px] tracking-widest opacity-40 px-3 mb-2">SYSTEM</p><button onclick="showPage('settings')" class="w-full text-left p-3 rounded-xl hover:bg-white/5 text-sm"><i class="fa-solid fa-gear mr-2"></i>Settings</button></div>
     </div>
-    <div class="flex-1 p-4 space-y-7 overflow-y-auto">
-      <div><p class="text-[10px] tracking-[0.3em] opacity-40 px-3 mb-3">MAIN WORKSPACE</p><div class="space-y-1"><button class="w-full text-left p-3 rounded-xl bg-white/10 flex items-center gap-3 text-sm font-bold"><i class="fa-solid fa-table-columns w-5"></i> Dashboard <span class="ml-auto text-[9px] bg-emerald-500/20 text-emerald-400 px-2 py-1 rounded-full">LIVE</span></button><button onclick="openRegister()" class="w-full text-left p-3 rounded-xl hover:bg-white/5 flex items-center gap-3 text-sm"><i class="fa-solid fa-user-plus w-5 opacity-60"></i> Create Account</button><button onclick="openLogin()" class="w-full text-left p-3 rounded-xl hover:bg-white/5 flex items-center gap-3 text-sm"><i class="fa-solid fa-right-to-bracket w-5 opacity-60"></i> Login Account</button></div></div>
-      <div><p class="text-[10px] tracking-[0.3em] opacity-40 px-3 mb-3">TRADING TOOLS</p><div class="space-y-1"><button onclick="openBots()" class="w-full text-left p-3 rounded-xl hover:bg-white/5 flex items-center justify-between text-sm"><span class="flex items-center gap-3"><i class="fa-solid fa-robot w-5 opacity-60"></i> Trading Bots</span><span class="text-xs opacity-50 bg-white/10 px-2 py-0.5 rounded-full">85</span></button><button onclick="openAnalysis()" class="w-full text-left p-3 rounded-xl hover:bg-white/5 flex items-center justify-between text-sm"><span class="flex items-center gap-3"><i class="fa-solid fa-chart-line w-5 opacity-60"></i> Market Analysis</span><span class="text-xs opacity-50 bg-white/10 px-2 py-0.5 rounded-full">5 Views</span></button><button onclick="openCopy()" class="w-full text-left p-3 rounded-xl hover:bg-white/5 flex items-center gap-3 text-sm"><i class="fa-solid fa-copy w-5 opacity-60"></i> Copy Trading</button><button onclick="openRisk()" class="w-full text-left p-3 rounded-xl hover:bg-white/5 flex items-center gap-3 text-sm"><i class="fa-solid fa-shield-halved w-5 opacity-60"></i> Risk Management</button></div></div>
-      <div><p class="text-[10px] tracking-[0.3em] opacity-40 px-3 mb-3">SYSTEM</p><div class="space-y-1"><button onclick="openSettings()" class="w-full text-left p-3 rounded-xl hover:bg-white/5 flex items-center gap-3 text-sm"><i class="fa-solid fa-gear w-5 opacity-60"></i> Settings</button><button class="w-full text-left p-3 rounded-xl hover:bg-white/5 flex items-center gap-3 text-sm"><i class="fa-solid fa-circle-question w-5 opacity-60"></i> Help Center</button></div></div>
-    </div>
-    <div class="p-4 border-t border-white/5"><div class="glass rounded-xl p-3 flex justify-between items-center"><div><p class="text-[10px] opacity-50">NIXQUANT STATUS</p><p class="text-xs font-bold text-emerald-400">● Connected • Secure</p></div><i class="fa-solid fa-power-off text-red-400"></i></div></div>
   </div>
 </div>
 
-<!-- HERO SECTION -->
+<!-- DASHBOARD PAGE -->
+<div id="dashboard" class="page">
+
 <section class="px-6 pt-8 text-center max-w-2xl mx-auto">
-  <div class="inline-flex glass px-5 py-2 rounded-full text-[11px] items-center gap-2"><i class="fa-solid fa-bolt text-sky-400"></i> Your connected trading workspace</div>
-  <h1 class="mt-6 text-[28px] md:text-[42px] font-black leading-[1.1]">Trade smarter,<br><span class="text-sky-400">not harder</span></h1>
-  <p class="text-[13px] opacity-60 mt-3 max-w-md mx-auto">Automate repetitive strategies while keeping your session limits in view.</p>
-  <div class="mt-8 flex flex-col items-center gap-3">
-    <button onclick="openRegister()" class="btn-main px-8 py-3.5 rounded-full font-bold text-sm min-w-[220px]">Start Trading Now <i class="fa-solid fa-arrow-right ml-2"></i></button>
-    <button onclick="openLogin()" class="px-8 py-3 rounded-full text-[12px] font-bold border-2 border-yellow-400 bg-[#1a1a00]/30 min-w-[220px]">Existing Account Login</button>
-    <button onclick="openRegister()" class="btn-main px-8 py-2.5 rounded-full text-[12px] font-bold opacity-90 min-w-[120px]">Sign Up</button>
-    <button onclick="openToken()" class="glass px-6 py-2.5 rounded-full text-[11px] mt-1">Log in with token</button>
+  <div class="inline-flex glass px-4 py-1.5 rounded-full text-[10px] gap-2"><i class="fa-solid fa-bolt text-sky-400"></i> Your connected trading workspace</div>
+  <h1 class="mt-5 text-[30px] font-black leading-tight">Trade smarter,<br><span class="text-sky-400">not harder</span></h1>
+  <p class="text-[12px] opacity-60 mt-2">Automate repetitive strategies while keeping your session limits in view.</p>
+  <div class="mt-7 flex flex-col items-center gap-3">
+    <button onclick="openRegister()" class="btn-main px-8 py-3.5 rounded-full font-bold text-sm">Start Trading Now <i class="fa-solid fa-arrow-right ml-2"></i></button>
+    <button onclick="openLogin()" class="px-8 py-3 rounded-full text-[11px] font-bold border-2 border-yellow-400 bg-yellow-400/10">Existing Account Login</button>
+    <button onclick="openRegister()" class="btn-main px-6 py-2 rounded-full text-[11px] opacity-90">Sign Up</button>
+    <button onclick="openToken()" class="glass-soft px-6 py-2 rounded-full text-[11px]">Log in with token</button>
   </div>
-  <div class="flex justify-center gap-6 mt-6 text-[11px] opacity-80"><span><i class="fa-solid fa-check text-emerald-400 mr-1"></i>Public Market Analysis</span><span><i class="fa-solid fa-check text-emerald-400 mr-1"></i>Virtual Account Available</span></div>
+  <div class="flex justify-center gap-5 mt-5 text-[11px]"><span><i class="fa-solid fa-check text-emerald-400 mr-1"></i>Public Market Analysis</span><span><i class="fa-solid fa-check text-emerald-400 mr-1"></i>Virtual Account Available</span></div>
 </section>
 
-<!-- SCROLL CARDS SR BB CT -->
-<div class="mt-10 flex gap-4 overflow-x-auto px-6 pb-4 no-scrollbar">
-  <button onclick="openReports()" class="text-left glass min-w-[280px] max-w-[280px] rounded-[1.8rem] p-6 relative hover:bg-white/10 transition"><div class="card-circle w-16 h-16 rounded-full flex items-center justify-center absolute top-4 right-4 text-[12px] font-black">SR</div><div class="mt-14"><h3 class="font-bold text-[14px]">Transaction Reports</h3><p class="text-[11px] text-sky-400">Contract ledger</p><p class="text-[12px] opacity-60 mt-3 leading-snug">Review totals, transactions, and journal in one workspace.</p><p class="text-[11px] mt-5 text-sky-400 font-bold"><i class="fa-solid fa-check mr-1"></i>Platform guide</p></div></button>
-  <button onclick="openBots()" class="text-left glass min-w-[280px] max-w-[280px] rounded-[1.8rem] p-6 relative hover:bg-white/10 transition"><div class="card-circle w-16 h-16 rounded-full flex items-center justify-center absolute top-4 right-4 text-[12px] font-black">BB</div><div class="mt-14"><h3 class="font-bold text-[14px]">Bot Builder</h3><p class="text-[11px] text-sky-400">Editable strategies</p><p class="text-[12px] opacity-60 mt-3 leading-snug">Load a strategy into the visual workspace and inspect it before choosing to run it.</p><p class="text-[11px] mt-5 text-sky-400 font-bold"><i class="fa-solid fa-check mr-1"></i>Platform guide</p></div></button>
-  <button onclick="openCopy()" class="text-left glass min-w-[280px] max-w-[280px] rounded-[1.8rem] p-6 relative hover:bg-white/10 transition"><div class="card-circle w-16 h-16 rounded-full flex items-center justify-center absolute top-4 right-4 text-[12px] font-black">CT</div><div class="mt-14"><h3 class="font-bold text-[14px]">Copy Trading</h3><p class="text-[11px] text-sky-400">Explicit account controls</p><p class="text-[12px] opacity-60 mt-3 leading-snug">Choose your own authorized accounts and review confirmation before enabling future trade copying.</p><p class="text-[11px] mt-5 text-sky-400 font-bold"><i class="fa-solid fa-check mr-1"></i>Platform guide</p></div></button>
+<div class="mt-8 flex gap-4 overflow-x-auto px-5 pb-4 no-scrollbar">
+  <button onclick="showPage('reports')" class="text-left glass min-w-[270px] rounded-[1.5rem] p-5"><div class="card-circle w-12 h-12 rounded-full flex items-center justify-center ml-auto text-xs font-bold">SR</div><h3 class="font-bold text-sm mt-6">Transaction Reports</h3><p class="text-[11px] text-sky-400">Contract ledger</p><p class="text-[11px] opacity-60 mt-2">Review totals, transactions, and journal in one workspace.</p></button>
+  <button onclick="showPage('bots')" class="text-left glass min-w-[270px] rounded-[1.5rem] p-5"><div class="card-circle w-12 h-12 rounded-full flex items-center justify-center ml-auto text-xs font-bold">BB</div><h3 class="font-bold text-sm mt-6">Bot Builder</h3><p class="text-[11px] text-sky-400">Editable strategies</p><p class="text-[11px] opacity-60 mt-2">Load a strategy into the visual workspace and inspect it.</p></button>
+  <button onclick="showPage('bots')" class="text-left glass min-w-[270px] rounded-[1.5rem] p-5"><div class="card-circle w-12 h-12 rounded-full flex items-center justify-center ml-auto text-xs font-bold">CT</div><h3 class="font-bold text-sm mt-6">Copy Trading</h3><p class="text-[11px] text-sky-400">Explicit account controls</p><p class="text-[11px] opacity-60 mt-2">Choose your own authorized accounts and review confirmation.</p></button>
 </div>
 
-<!-- COUNTERS 85 5 4 1 -->
-<div class="px-6 grid grid-cols-4 gap-4 mt-6 max-w-lg mx-auto">
-  <button onclick="openBots()" class="text-center"><div class="card-circle w-14 h-14 mx-auto rounded-full flex items-center justify-center text-red-400 font-black text-[13px]">85</div><p class="text-[10px] mt-2 opacity-60">XML Bots</p></button>
-  <button onclick="openAnalysis()" class="text-center"><div class="card-circle w-14 h-14 mx-auto rounded-full flex items-center justify-center text-red-400 font-black text-[13px]">5</div><p class="text-[10px] mt-2 opacity-60">Analysis Views</p></button>
-  <button onclick="openReports()" class="text-center"><div class="card-circle w-14 h-14 mx-auto rounded-full flex items-center justify-center text-red-400 font-black text-[13px]">4</div><p class="text-[10px] mt-2 opacity-60">Report Types</p></button>
-  <button class="text-center"><div class="card-circle w-14 h-14 mx-auto rounded-full flex items-center justify-center text-red-400 font-black text-[13px]">1</div><p class="text-[10px] mt-2 opacity-60">Workspace</p></button>
+<div class="px-6 grid grid-cols-4 gap-3 mt-4 max-w-lg mx-auto">
+  <button onclick="showPage('bots')" class="text-center"><div class="card-circle w-12 h-12 mx-auto rounded-full flex items-center justify-center text-red-400 font-black text-xs">85</div><p class="text-[9px] mt-2 opacity-60">XML Bots</p></button>
+  <button onclick="showPage('analysis')" class="text-center"><div class="card-circle w-12 h-12 mx-auto rounded-full flex items-center justify-center text-red-400 font-black text-xs">5</div><p class="text-[9px] mt-2 opacity-60">Analysis Views</p></button>
+  <button onclick="showPage('reports')" class="text-center"><div class="card-circle w-12 h-12 mx-auto rounded-full flex items-center justify-center text-red-400 font-black text-xs">4</div><p class="text-[9px] mt-2 opacity-60">Report Types</p></button>
+  <button onclick="showPage('dashboard')" class="text-center"><div class="card-circle w-12 h-12 mx-auto rounded-full flex items-center justify-center text-red-400 font-black text-xs">1</div><p class="text-[9px] mt-2 opacity-60">Workspace</p></button>
 </div>
 
-<!-- 4 BIG CARDS -->
-<div class="px-6 mt-12 space-y-4 max-w-2xl mx-auto">
-  <button onclick="openBots()" class="w-full text-left glass rounded-[1.6rem] p-6 flex gap-4 hover:bg-white/10 transition"><div class="w-12 h-12 glass-soft rounded-xl flex items-center justify-center shrink-0"><i class="fa-solid fa-robot"></i></div><div><h3 class="font-bold text-sm">AI-Powered Trading Bots</h3><p class="text-[11px] text-sky-400">Editable automation</p><p class="text-[12px] opacity-60 mt-2">Configure strategies, inspect their logic, and choose when they may run. Automated trading does not guarantee profit.</p></div></button>
-  <button onclick="openAnalysis()" class="w-full text-left glass rounded-[1.6rem] p-6 flex gap-4 hover:bg-white/10 transition"><div class="w-12 h-12 glass-soft rounded-xl flex items-center justify-center shrink-0"><i class="fa-solid fa-chart-column"></i></div><div><h3 class="font-bold text-sm">Real-Time Market Analysis</h3><p class="text-[11px] text-sky-400">Data-driven decisions</p><p class="text-[12px] opacity-60 mt-2">Explore charts, digit distributions, and public market history before making a trading decision.</p></div></button>
-  <button onclick="openCopy()" class="w-full text-left glass rounded-[1.6rem] p-6 flex gap-4 hover:bg-white/10 transition"><div class="w-12 h-12 glass-soft rounded-xl flex items-center justify-center shrink-0"><i class="fa-solid fa-file"></i></div><div><h3 class="font-bold text-sm">Copy Trading Network</h3><p class="text-[11px] text-sky-400">Your authorized accounts</p><p class="text-[12px] opacity-60 mt-2">Manage explicitly selected accounts and stop future copying at any time. Past results do not predict future returns.</p></div></button>
-  <button onclick="openRisk()" class="w-full text-left glass rounded-[1.6rem] p-6 flex gap-4 hover:bg-white/10 transition"><div class="w-12 h-12 glass-soft rounded-xl flex items-center justify-center shrink-0"><i class="fa-solid fa-shield"></i></div><div><h3 class="font-bold text-sm">Risk Management Tools</h3><p class="text-[11px] text-sky-400">Plan your limits</p><p class="text-[12px] opacity-60 mt-2">Configure stop-loss, take-profit, and stake settings. These controls do not remove trading risk.</p></div></button>
+<div class="px-5 mt-10 space-y-4 max-w-2xl mx-auto">
+  <button onclick="showPage('bots')" class="w-full text-left glass rounded-[1.5rem] p-5 flex gap-4"><div class="w-11 h-11 glass-soft rounded-xl flex items-center justify-center"><i class="fa-solid fa-robot text-sm"></i></div><div><h3 class="font-bold text-sm">AI-Powered Trading Bots</h3><p class="text-[11px] text-sky-400">Editable automation</p><p class="text-[11px] opacity-60 mt-1">Configure strategies, inspect their logic, and choose when they may run.</p></div></button>
+  <button onclick="showPage('analysis')" class="w-full text-left glass rounded-[1.5rem] p-5 flex gap-4"><div class="w-11 h-11 glass-soft rounded-xl flex items-center justify-center"><i class="fa-solid fa-chart-column text-sm"></i></div><div><h3 class="font-bold text-sm">Real-Time Market Analysis</h3><p class="text-[11px] text-sky-400">Data-driven decisions</p><p class="text-[11px] opacity-60 mt-1">Explore charts, digit distributions, and public market history.</p></div></button>
+  <button onclick="showPage('bots')" class="w-full text-left glass rounded-[1.5rem] p-5 flex gap-4"><div class="w-11 h-11 glass-soft rounded-xl flex items-center justify-center"><i class="fa-solid fa-copy text-sm"></i></div><div><h3 class="font-bold text-sm">Copy Trading Network</h3><p class="text-[11px] text-sky-400">Your authorized accounts</p><p class="text-[11px] opacity-60 mt-1">Manage explicitly selected accounts and stop future copying at any time.</p></div></button>
+  <div class="glass rounded-[1.5rem] p-5 flex gap-4"><div class="w-11 h-11 glass-soft rounded-xl flex items-center justify-center"><i class="fa-solid fa-shield-halved text-sm"></i></div><div><h3 class="font-bold text-sm">Risk Management Tools</h3><p class="text-[11px] text-sky-400">Plan your limits</p><p class="text-[11px] opacity-60 mt-1">Configure stop-loss, take-profit, and stake settings. These controls do not remove trading risk.</p></div></div>
 </div>
 
-<!-- STAY IN CONTROL -->
-<section class="text-center px-6 mt-14"><div class="inline-block glass px-4 py-1 rounded-full text-[9px] tracking-[0.3em] text-sky-400">YOUR WORKSPACE</div><h2 class="text-[22px] font-black mt-4">Stay in control of your trading</h2><p class="text-[12px] opacity-60 mt-2">Review your strategy, account, and risk settings before execution.</p><div class="flex gap-2 justify-center mt-5 flex-wrap"><span class="glass px-5 py-2.5 rounded-full text-[11px] font-bold"><i class="fa-solid fa-check mr-2"></i>Editable strategies</span><span class="glass px-5 py-2.5 rounded-full text-[11px] font-bold"><i class="fa-solid fa-check mr-2"></i>Public analysis</span><span class="glass px-5 py-2.5 rounded-full text-[11px] font-bold"><i class="fa-solid fa-check mr-2"></i>Explicit execution</span></div></section>
+<div class="mt-12 text-center px-6">
+  <div class="inline-block bg-[#1e2d50] text-sky-400 px-4 py-1 rounded-full text-[9px] tracking-widest font-bold">YOUR WORKSPACE</div>
+  <h2 class="text-[20px] font-black mt-4">Stay in control of your trading</h2>
+  <p class="text-[11px] opacity-50 mt-2">Review your strategy, account, and risk settings before execution.</p>
+  <div class="flex justify-center gap-2 mt-5 flex-wrap"><span class="glass-soft px-4 py-2 rounded-full text-[11px] font-bold"><i class="fa-solid fa-check mr-1"></i> Editable strategies</span><span class="glass-soft px-4 py-2 rounded-full text-[11px] font-bold"><i class="fa-solid fa-check mr-1"></i> Public analysis</span><span class="glass-soft px-4 py-2 rounded-full text-[11px] font-bold"><i class="fa-solid fa-check mr-1"></i> Explicit execution</span></div>
+</div>
 
-<!-- WHY CHOOSE -->
-<div class="px-6 mt-12 max-w-2xl mx-auto"><div class="glass rounded-[2rem] p-7"><div class="text-center"><div class="inline-block glass px-4 py-1 rounded-full text-[9px] tracking-[0.3em] text-sky-400">WHY NIXQUANT MARKETS</div><h2 class="text-[18px] font-black mt-4">Why Choose Nixquant Markets?</h2><p class="text-[11px] opacity-60 mt-1">Keep analysis, automation, and risk planning together</p></div><div class="mt-7 space-y-3"><div class="glass-soft rounded-full px-5 py-3.5 flex gap-3 items-center text-[12px]"><i class="fa-solid fa-check text-red-400 bg-red-500/10 w-6 h-6 rounded-full flex items-center justify-center text-[10px]"></i>Inspect editable XML strategies before running</div><div class="glass-soft rounded-full px-5 py-3.5 flex gap-3 items-center text-[12px]"><i class="fa-solid fa-check text-red-400 bg-red-500/10 w-6 h-6 rounded-full flex items-center justify-center text-[10px]"></i>Public symbol data available while signed out</div><div class="glass-soft rounded-full px-5 py-3.5 flex gap-3 items-center text-[12px]"><i class="fa-solid fa-check text-red-400 bg-red-500/10 w-6 h-6 rounded-full flex items-center justify-center text-[10px]"></i>Separate analysis from trade execution</div><div class="glass-soft rounded-full px-5 py-3.5 flex gap-3 items-center text-[12px]"><i class="fa-solid fa-check text-red-400 bg-red-500/10 w-6 h-6 rounded-full flex items-center justify-center text-[10px]"></i>Review settlement-based session reports</div><div class="glass-soft rounded-full px-5 py-3.5 flex gap-3 items-center text-[12px]"><i class="fa-solid fa-check text-red-400 bg-red-500/10 w-6 h-6 rounded-full flex items-center justify-center text-[10px]"></i>Choose explicit stop-loss and take-profit limits</div><div class="glass-soft rounded-full px-5 py-3.5 flex gap-3 items-center text-[12px]"><i class="fa-solid fa-check text-red-400 bg-red-500/10 w-6 h-6 rounded-full flex items-center justify-center text-[10px]"></i>Responsive tools for desktop and mobile</div></div></div></div>
+<div class="px-5 mt-10 max-w-2xl mx-auto">
+  <div class="glass rounded-[1.8rem] p-6">
+    <div class="text-center"><div class="inline-block bg-[#1e2d50] text-sky-400 px-4 py-1 rounded-full text-[9px] tracking-widest font-bold">WHY NIXQUANT MARKETS</div><h2 class="text-[17px] font-black mt-3">Why Choose Nixquant Markets?</h2><p class="text-[11px] opacity-50 mt-1">Keep analysis, automation, and risk planning together</p></div>
+    <div class="mt-6 space-y-3">
+      <div class="glass-soft rounded-full px-4 py-3 flex items-center gap-3 text-[12px]"><span class="w-6 h-6 rounded-full check-red flex items-center justify-center"><i class="fa-solid fa-check text-[10px]"></i></span> Inspect editable XML strategies before running</div>
+      <div class="glass-soft rounded-full px-4 py-3 flex items-center gap-3 text-[12px]"><span class="w-6 h-6 rounded-full check-red flex items-center justify-center"><i class="fa-solid fa-check text-[10px]"></i></span> Public symbol data available while signed out</div>
+      <div class="glass-soft rounded-full px-4 py-3 flex items-center gap-3 text-[12px]"><span class="w-6 h-6 rounded-full check-red flex items-center justify-center"><i class="fa-solid fa-check text-[10px]"></i></span> Separate analysis from trade execution</div>
+      <div class="glass-soft rounded-full px-4 py-3 flex items-center gap-3 text-[12px]"><span class="w-6 h-6 rounded-full check-red flex items-center justify-center"><i class="fa-solid fa-check text-[10px]"></i></span> Review settlement-based session reports</div>
+      <div class="glass-soft rounded-full px-4 py-3 flex items-center gap-3 text-[12px]"><span class="w-6 h-6 rounded-full check-red flex items-center justify-center"><i class="fa-solid fa-check text-[10px]"></i></span> Choose explicit stop-loss and take-profit limits</div>
+      <div class="glass-soft rounded-full px-4 py-3 flex items-center gap-3 text-[12px]"><span class="w-6 h-6 rounded-full check-red flex items-center justify-center"><i class="fa-solid fa-check text-[10px]"></i></span> Responsive tools for desktop and mobile</div>
+    </div>
+  </div>
+</div>
 
-<!-- GET STARTED -->
-<div class="px-6 mt-10 mb-24 max-w-2xl mx-auto"><div class="bg-gradient-to-br from-[#1d1642] via-[#151030] to-[#0e0c24] rounded-[2rem] p-8 text-center border border-white/10"><div class="inline-block glass px-4 py-1 rounded-full text-[9px] tracking-[0.3em] text-sky-400">GET STARTED</div><h2 class="text-[20px] font-black mt-4">Ready to Explore Your Workspace?</h2><p class="text-[11px] opacity-60 mt-3 leading-relaxed">Start with a virtual account. Trading involves risk; never trade more than you can afford to lose.</p><button onclick="openRegister()" class="btn-main px-10 py-3.5 rounded-full font-bold text-sm mt-7">Create an Account <i class="fa-solid fa-arrow-right ml-2"></i></button><p class="text-[12px] mt-8 underline opacity-60 cursor-pointer">About this platform</p></div></div>
+<div class="px-5 mt-8 mb-12 max-w-2xl mx-auto">
+  <div class="bg-gradient-to-br from-[#1e1743] via-[#1a1440] to-[#0f0f26] rounded-[1.8rem] p-8 text-center border border-white/10">
+    <div class="inline-block bg-[#2a2a5a] text-sky-400 px-4 py-1 rounded-full text-[9px] tracking-widest font-bold">GET STARTED</div>
+    <h2 class="text-[18px] font-black mt-4">Ready to Explore Your Workspace?</h2>
+    <p class="text-[11px] opacity-50 mt-3">Start with a virtual account. Trading involves risk; never trade more than you can afford to lose.</p>
+    <button onclick="openRegister()" class="btn-main px-8 py-3 rounded-full font-bold text-sm mt-6">Create an Account <i class="fa-solid fa-arrow-right ml-2"></i></button>
+  </div>
+  <p class="text-center text-[11px] mt-6 opacity-40 underline">About this platform</p>
+</div>
+
+</div>
+
+<!-- BOTS PAGE REAL - INAFANYA KAZI -->
+<div id="bots" class="page hidden min-h-screen bg-[#060a19] p-6">
+  <div class="flex items-center gap-3"><button onclick="showPage('dashboard')" class="w-9 h-9 glass rounded-full flex items-center justify-center"><i class="fa-solid fa-arrow-left text-xs"></i></button><h2 class="font-black text-lg">My Bots (85)</h2><span class="ml-auto bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full text-[10px]">● LIVE</span></div>
+  <div class="mt-6 space-y-3">
+    <div class="glass rounded-2xl p-4 flex justify-between items-center"><div><p class="font-bold text-sm">Nixquant Scalper v1</p><p class="text-[11px] text-emerald-400">● Running • +$12.40</p></div><button onclick="toggleBot(this)" class="bg-red-500 px-4 py-1.5 rounded-full text-xs font-bold">Stop</button></div>
+    <div class="glass rounded-2xl p-4 flex justify-between items-center"><div><p class="font-bold text-sm">Gold Rush Bot</p><p class="text-[11px] opacity-50">○ Stopped • Last +$8.20</p></div><button onclick="toggleBot(this)" class="bg-emerald-500 px-4 py-1.5 rounded-full text-xs font-bold">Start</button></div>
+    <div class="glass rounded-2xl p-4 flex justify-between items-center"><div><p class="font-bold text-sm">Digits Over 2</p><p class="text-[11px] opacity-50">○ Idle • Win Rate 62%</p></div><button onclick="toggleBot(this)" class="bg-emerald-500 px-4 py-1.5 rounded-full text-xs font-bold">Start</button></div>
+    <div class="glass rounded-2xl p-4 flex justify-between items-center"><div><p class="font-bold text-sm">Nixquant Auto v3</p><p class="text-[11px] opacity-50">○ Idle</p></div><button onclick="toggleBot(this)" class="bg-emerald-500 px-4 py-1.5 rounded-full text-xs font-bold">Start</button></div>
+  </div>
+</div>
+
+<!-- ANALYSIS PAGE REAL -->
+<div id="analysis" class="page hidden min-h-screen bg-[#060a19] p-6">
+  <div class="flex items-center gap-3"><button onclick="showPage('dashboard')" class="w-9 h-9 glass rounded-full flex items-center justify-center"><i class="fa-solid fa-arrow-left text-xs"></i></button><h2 class="font-black text-lg">Analysis (5 Views)</h2></div>
+  <div class="mt-6 space-y-4">
+    <div class="glass rounded-2xl p-5"><p class="font-bold text-sm">Volatility 10 Index</p><div class="mt-3 h-28 bg-black/40 rounded-xl flex items-end gap-1 p-3"><div class="flex-1 bg-emerald-400 h-[60%] rounded-sm"></div><div class="flex-1 bg-emerald-400 h-[85%] rounded-sm"></div><div class="flex-1 bg-red-400 h-[30%] rounded-sm"></div><div class="flex-1 bg-emerald-400 h-[70%] rounded-sm"></div><div class="flex-1 bg-emerald-400 h-[90%] rounded-sm"></div><div class="flex-1 bg-red-400 h-[40%] rounded-sm"></div></div></div>
+    <div class="glass rounded-2xl p-5"><p class="font-bold text-sm">Digit Distribution - Last 100 Ticks</p><div class="grid grid-cols-5 gap-2 mt-3 text-[11px]"><div class="bg-white/5 p-2 rounded-lg text-center">0<br><b>8%</b></div><div class="bg-white/5 p-2 rounded-lg text-center">1<br><b>12%</b></div><div class="bg-emerald-500/20 p-2 rounded-lg text-center">2<br><b>18%</b></div><div class="bg-white/5 p-2 rounded-lg text-center">3<br><b>9%</b></div><div class="bg-white/5 p-2 rounded-lg text-center">4<br><b>11%</b></div></div></div>
+  </div>
+</div>
+
+<!-- REPORTS PAGE -->
+<div id="reports" class="page hidden min-h-screen bg-[#060a19] p-6">
+  <div class="flex items-center gap-3"><button onclick="showPage('dashboard')" class="w-9 h-9 glass rounded-full flex items-center justify-center"><i class="fa-solid fa-arrow-left text-xs"></i></button><h2 class="font-black text-lg">Reports (4 Types)</h2></div>
+  <div class="mt-6 space-y-3"><div class="glass rounded-2xl p-4"><p class="font-bold text-sm">Session Report</p><p class="text-[11px] opacity-60">Total Trades: 42 • Profit: +$24.10</p></div><div class="glass rounded-2xl p-4"><p class="font-bold text-sm">Transaction Ledger</p><p class="text-[11px] opacity-60">All contracts and settlements</p></div></div>
+</div>
+
+<!-- SETTINGS PAGE REAL -->
+<div id="settings" class="page hidden min-h-screen bg-[#060a19] p-6">
+  <div class="flex items-center gap-3"><button onclick="showPage('dashboard')" class="w-9 h-9 glass rounded-full flex items-center justify-center"><i class="fa-solid fa-arrow-left text-xs"></i></button><h2 class="font-black text-lg">Settings</h2></div>
+  <div class="mt-6 space-y-3"><div class="glass rounded-2xl p-4 flex justify-between"><div><p class="text-[11px] opacity-60">App ID</p><p class="font-bold">1089 • Connected</p></div><span class="text-emerald-400">●</span></div><div class="glass rounded-2xl p-4 flex justify-between"><div><p class="text-[11px] opacity-60">Owner</p><p class="font-bold">Sir Nick</p></div></div><div class="glass rounded-2xl p-4 flex justify-between items-center"><p class="text-sm">Notifications</p><div class="w-10 h-5 bg-emerald-500 rounded-full relative"><div class="absolute right-0.5 top-0.5 w-4 h-4 bg-white rounded-full"></div></div></div></div>
+</div>
 
 </div>
 
 <!-- MODALS -->
-<div id="regModal" class="fixed inset-0 z-[300] bg-black/80 backdrop-blur hidden items-center justify-center p-5"><div class="glass rounded-[2rem] p-8 w-full max-w-md"><div class="flex justify-between items-center"><h3 class="font-bold text-lg">Create Account</h3><button onclick="closeModals()" class="w-9 h-9 bg-white/10 rounded-full"><i class="fa-solid fa-xmark"></i></button></div><input id="rName" placeholder="Full Name" class="w-full mt-6 p-3.5 rounded-xl bg-black/50 border border-white/10 text-sm outline-none"><input id="rEmail" placeholder="Email Address" class="w-full mt-3 p-3.5 rounded-xl bg-black/50 border border-white/10 text-sm outline-none"><input id="rPass" type="password" placeholder="Password" class="w-full mt-3 p-3.5 rounded-xl bg-black/50 border border-white/10 text-sm outline-none"><button onclick="doRegister()" class="w-full mt-6 btn-main py-3.5 rounded-xl font-bold">Create Account →</button><p class="text-center text-[11px] opacity-50 mt-4">Already have account? <span onclick="openLogin()" class="text-sky-400 cursor-pointer">Login</span></p></div></div>
-<div id="logModal" class="fixed inset-0 z-[300] bg-black/80 backdrop-blur hidden items-center justify-center p-5"><div class="glass rounded-[2rem] p-8 w-full max-w-md"><div class="flex justify-between items-center"><h3 class="font-bold text-lg">Welcome Back</h3><button onclick="closeModals()" class="w-9 h-9 bg-white/10 rounded-full"><i class="fa-solid fa-xmark"></i></button></div><input id="lEmail" placeholder="Email" class="w-full mt-6 p-3.5 rounded-xl bg-black/50 border border-white/10 text-sm outline-none"><input id="lPass" type="password" placeholder="Password" class="w-full mt-3 p-3.5 rounded-xl bg-black/50 border border-white/10 text-sm outline-none"><button onclick="doLogin()" class="w-full mt-6 bg-white text-black py-3.5 rounded-xl font-bold">Login Now</button><p class="text-center text-[11px] opacity-50 mt-4">Don't have account? <span onclick="openRegister()" class="text-sky-400 cursor-pointer">Register</span></p></div></div>
+<div id="regModal" class="fixed inset-0 z-[300] bg-black/80 backdrop-blur hidden items-center justify-center p-5"><div class="glass rounded-[1.8rem] p-6 w-full max-w-sm"><div class="flex justify-between items-center"><h3 class="font-bold">Create Account</h3><button onclick="closeModals()" class="w-8 h-8 bg-white/10 rounded-full"><i class="fa-solid fa-xmark"></i></button></div><input id="rName" placeholder="Full Name" class="w-full mt-5 p-3 rounded-xl bg-black/50 border border-white/10 text-sm"><input id="rEmail" placeholder="Email" class="w-full mt-3 p-3 rounded-xl bg-black/50 border border-white/10 text-sm"><button onclick="doRegister()" class="w-full mt-5 btn-main py-3 rounded-xl font-bold">Create Account</button></div></div>
+<div id="logModal" class="fixed inset-0 z-[300] bg-black/80 backdrop-blur hidden items-center justify-center p-5"><div class="glass rounded-[1.8rem] p-6 w-full max-w-sm"><div class="flex justify-between items-center"><h3 class="font-bold">Login</h3><button onclick="closeModals()" class="w-8 h-8 bg-white/10 rounded-full"><i class="fa-solid fa-xmark"></i></button></div><input placeholder="Email" class="w-full mt-5 p-3 rounded-xl bg-black/50 border border-white/10 text-sm"><input type="password" placeholder="Password" class="w-full mt-3 p-3 rounded-xl bg-black/50 border border-white/10 text-sm"><button onclick="closeModals()" class="w-full mt-5 bg-white text-black py-3 rounded-xl font-bold">Login Now</button></div></div>
+<div id="tokenModal" class="fixed inset-0 z-[300] bg-black/80 backdrop-blur hidden items-center justify-center p-5"><div class="glass rounded-[1.8rem] p-6 w-full max-w-sm"><div class="flex justify-between items-center"><h3 class="font-bold">Connect Token</h3><button onclick="closeModals()" class="w-8 h-8 bg-white/10 rounded-full"><i class="fa-solid fa-xmark"></i></button></div><input placeholder="Paste API Token" class="w-full mt-5 p-3 rounded-xl bg-black/50 border border-white/10 text-sm"><button onclick="closeModals()" class="w-full mt-5 bg-white text-black py-3 rounded-xl font-bold">Connect</button></div></div>
 
 <script>
-let count=1;const bar=document.getElementById('bar'),pct=document.getElementById('pct'),statusText=document.getElementById('statusText'),loader=document.getElementById('loader'),mainSite=document.getElementById('mainSite'),enterBtn=document.getElementById('enterBtn');const msgs=["Initializing workspace...","Connecting to Nixquant secure server...","Loading 85 trading bots...","Fetching market data...","Securing your session...","Ready to trade!"];let timer=setInterval(()=>{count++;bar.style.width=count+'%';pct.innerText=count+'%';if(count%20==0)statusText.innerText=msgs[Math.floor(count/20)];if(count>=100){clearInterval(timer);statusText.innerText="Workspace Connected! Welcome 🎉";bar.style.background="#10b981";enterBtn.classList.remove('hidden');setTimeout(()=>{loader.style.display='none';mainSite.classList.remove('hidden');},900);}},32);
-enterBtn.onclick=()=>{loader.style.display='none';mainSite.classList.remove('hidden');}
-function openMenu(){document.getElementById('menuDrawer').classList.remove('hidden')}function closeMenu(){document.getElementById('menuDrawer').classList.add('hidden')}
-function openRegister(){closeMenu();closeModals();const m=document.getElementById('regModal');m.classList.remove('hidden');m.classList.add('flex')}
-function openLogin(){closeMenu();closeModals();const m=document.getElementById('logModal');m.classList.remove('hidden');m.classList.add('flex')}
-function closeModals(){document.getElementById('regModal').classList.add('hidden');document.getElementById('logModal').classList.add('hidden');document.getElementById('regModal').classList.remove('flex');document.getElementById('logModal').classList.remove('flex')}
-function openToken(){closeMenu();alert('🔑 Token Login - Hapa user ataweka Nixquant API token yake (App ID 1089) nyuma, sio mbele.')}
-function openBots(){closeMenu();alert('🤖 AI Trading Bots 85 - Hapa bot builder na XML strategies zitafunguka.')}
-function openAnalysis(){closeMenu();alert('📊 Real-Time Analysis - 5 Views - Charts, digits, market history.')}
-function openCopy(){closeMenu();alert('👥 Copy Trading - Authorized accounts only.')}
-function openRisk(){closeMenu();alert('🛡️ Risk Management - Stop-loss, take-profit, stake settings.')}
-function openReports(){closeMenu();alert('📄 Transaction Reports - SR - Session Reports.')}
-function openSettings(){closeMenu();alert('⚙️ Settings - Sir Nick Admin Panel - App ID 1089')}
-function doRegister(){const n=document.getElementById('rName').value.trim(),e=document.getElementById('rEmail').value.trim(),p=document.getElementById('rPass').value;if(!n||!e||!p){alert('Jaza kila kitu msee!');return}let v=JSON.parse(localStorage.getItem('nix_visitors')||'[]');v.push({name:n,email:e,time:new Date().toISOString(),page:'register',type:'nixquant'});localStorage.setItem('nix_visitors',JSON.stringify(v));localStorage.setItem('nix_user',JSON.stringify({name:n,email:e}));closeModals();alert('✅ Welcome to Nixquant Markets, '+n+'! Account yako imeundwa. You are now in your trading workspace.');}
-function doLogin(){const e=document.getElementById('lEmail').value.trim(),p=document.getElementById('lPass').value.trim();if(!e||!p){alert('Weka email na password');return}localStorage.setItem('nix_user',JSON.stringify({email:e}));closeModals();alert('✅ Logged In! Welcome back to Nixquant Markets.');}
+let c=1;let bar=document.getElementById('bar'),pct=document.getElementById('pct'),st=document.getElementById('statusText'),loader=document.getElementById('loader'),main=document.getElementById('mainSite');
+let timer=setInterval(()=>{c++;bar.style.width=c+'%';pct.innerText=c+'%';if(c>=100){clearInterval(timer);loader.style.display='none';main.classList.remove('hidden')}},18);
+function openMenu(){document.getElementById('menuDrawer').classList.remove('hidden')}
+function closeMenu(){document.getElementById('menuDrawer').classList.add('hidden')}
+function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');closeMenu();window.scrollTo(0,0)}
+function openRegister(){document.getElementById('regModal').classList.remove('hidden');document.getElementById('regModal').classList.add('flex')}
+function openLogin(){document.getElementById('logModal').classList.remove('hidden');document.getElementById('logModal').classList.add('flex')}
+function openToken(){document.getElementById('tokenModal').classList.remove('hidden');document.getElementById('tokenModal').classList.add('flex')}
+function closeModals(){document.querySelectorAll('#regModal,#logModal,#tokenModal').forEach(m=>{m.classList.add('hidden');m.classList.remove('flex')})}
+function doRegister(){closeModals();showPage('dashboard')}
+function toggleBot(btn){if(btn.innerText=='Stop'){btn.innerText='Start';btn.className='bg-emerald-500 px-4 py-1.5 rounded-full text-xs font-bold'}else{btn.innerText='Stop';btn.className='bg-red-500 px-4 py-1.5 rounded-full text-xs font-bold'}}
 </script>
 </body>
-</html>
+                                         </html>

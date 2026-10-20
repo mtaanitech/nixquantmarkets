@@ -15,38 +15,30 @@ body{font-family:Inter,sans-serif;background:#070d1e;color:white}
 </head>
 <body>
 
-<!-- FULL LOADER 1% to 100% -->
+<!-- LOADER 1% to 100% -->
 <div id="loader" class="fixed inset-0 z-[999] bg-[#070d1e] flex items-center justify-center p-4">
   <div class="glass rounded-[2.5rem] p-8 md:p-10 max-w-[430px] w-full text-center">
     <div class="font-black text-[28px] tracking-tighter"><span class="text-emerald-400">NIX</span><span class="text-red-400">QUANT</span> MARKETS</div>
     <div class="mt-2 flex justify-center gap-2"><span class="text-[10px] tracking-[0.35em] opacity-50">TRADING HUB</span><span class="px-3 py-1 rounded-full border border-emerald-400/30 text-emerald-300 text-[10px]">● LIVE</span></div>
-    
     <h2 class="mt-8 font-bold text-[18px] text-left">Welcome to Nixquant Markets</h2>
-    <p class="text-left text-[13px] opacity-60">Empowering your financial journey. Connecting to Deriv server...</p>
-    
-    <div class="mt-6 h-3 bg-white/10 rounded-full overflow-hidden">
-      <div id="bar" class="loader-bar h-full w-[1%] transition-all duration-75"></div>
-    </div>
-    <div class="mt-3 flex justify-between text-[12px]">
-      <span class="opacity-60"><i class="fa-solid fa-circle-notch fa-spin mr-2"></i><span id="statusText">Initializing workspace...</span></span>
-      <span id="pct" class="font-black">1%</span>
-    </div>
-
+    <p class="text-left text-[13px] opacity-60">Empowering your financial journey. Connecting to secure workspace...</p>
+    <div class="mt-6 h-3 bg-white/10 rounded-full overflow-hidden"><div id="bar" class="loader-bar h-full w-[1%] transition-all duration-75"></div></div>
+    <div class="mt-3 flex justify-between text-[12px]"><span class="opacity-60"><i class="fa-solid fa-circle-notch fa-spin mr-2"></i><span id="statusText">Initializing workspace...</span></span><span id="pct" class="font-black">1%</span></div>
     <button id="enterBtn" class="hidden w-full mt-8 glow-btn py-4 rounded-full font-bold"><i class="fa-solid fa-arrow-right mr-2"></i>Enter Trading Hub - Register Now</button>
   </div>
 </div>
 
-<!-- MAIN SITE - HIDDEN UNTIL 100% -->
+<!-- MAIN SITE -->
 <div id="mainSite" class="hidden">
 <nav class="sticky top-0 z-50 bg-[#070d1e]/90 backdrop-blur-xl border-b border-white/5 px-6 py-4 flex justify-between">
-  <b class="text-sm"><span class="text-emerald-400">NIXQUANT</span> MARKETS</b>
-  <div class="flex gap-2">
-    <button onclick="openRegister()" class="bg-white text-black px-5 py-2 rounded-full text-sm font-bold">Register Now</button>
-    <button onclick="openLogin()" class="glass px-5 py-2 rounded-full text-sm">Login</button>
-  </div>
+  <div class="flex items-center gap-3"><button onclick="openMenu()" class="w-9 h-9 glass rounded-full"><i class="fa-solid fa-bars"></i></button><b class="text-sm"><span class="text-emerald-400">NIXQUANT</span> MARKETS</b></div>
+  <div class="flex gap-2"><button onclick="openRegister()" class="bg-white text-black px-5 py-2 rounded-full text-sm font-bold">Register Now</button><button onclick="openLogin()" class="glass px-5 py-2 rounded-full text-sm">Login</button></div>
 </nav>
 
-<!-- REGISTER MODAL -->
+<!-- MENU DRAWER -->
+<div id="menuDrawer" class="fixed inset-0 z-[200] hidden"><div onclick="closeMenu()" class="absolute inset-0 bg-black/70"></div><div class="absolute left-0 top-0 bottom-0 w-[280px] bg-[#0f1424] p-6 border-r border-white/10"><div class="flex justify-between items-center"><h2 class="font-black">MENU</h2><button onclick="closeMenu()" class="w-8 h-8 bg-white/10 rounded-full"><i class="fa-solid fa-xmark"></i></button></div><div class="mt-8 space-y-2"><button onclick="closeMenu()" class="w-full text-left p-3 rounded-xl bg-white/10 flex gap-3"><i class="fa-solid fa-house"></i> Dashboard</button><button onclick="openBots()" class="w-full text-left p-3 rounded-xl bg-white/5 flex gap-3"><i class="fa-solid fa-robot"></i> My Bots (85)</button><button onclick="openAnalysis()" class="w-full text-left p-3 rounded-xl bg-white/5 flex gap-3"><i class="fa-solid fa-chart-line"></i> Analysis (5 Views)</button><button onclick="openSettings()" class="w-full text-left p-3 rounded-xl bg-white/5 flex gap-3"><i class="fa-solid fa-gear"></i> Settings</button></div><p class="text-[10px] opacity-30 mt-10">App ID: 1089 • Nixquant v1.0 • Sir Nick System</p></div></div>
+
+<!-- REGISTER MODAL - FIXED NO DERIV -->
 <div id="registerModal" class="fixed inset-0 z-[100] bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
   <div class="glass rounded-[2rem] p-8 max-w-md w-full">
     <div class="flex justify-between items-center"><h3 class="font-bold text-xl">Create Account</h3><button onclick="closeModals()" class="w-8 h-8 bg-white/10 rounded-full"><i class="fa-solid fa-xmark"></i></button></div>
@@ -55,9 +47,6 @@ body{font-family:Inter,sans-serif;background:#070d1e;color:white}
     <input id="regPass" type="password" placeholder="Password" class="w-full mt-3 p-3.5 rounded-xl bg-black/50 border border-white/10 text-sm outline-none">
     <button onclick="doRegister()" class="w-full mt-5 glow-btn py-3.5 rounded-xl font-bold">Register & Start Trading →</button>
     <p class="text-center text-[11px] opacity-50 mt-3">Already have account? <span onclick="openLogin()" class="text-sky-400 cursor-pointer">Login</span></p>
-    <div class="mt-4 pt-4 border-t border-white/10">
-      <button onclick="loginDeriv()" class="w-full glass py-3 rounded-xl text-sm font-bold"><i class="fa-brands fa-connectdevelop mr-2"></i>Continue with Deriv OAuth</button>
-    </div>
   </div>
 </div>
 
@@ -68,9 +57,6 @@ body{font-family:Inter,sans-serif;background:#070d1e;color:white}
     <input id="logEmail" placeholder="Email" class="w-full mt-6 p-3.5 rounded-xl bg-black/50 border border-white/10 text-sm outline-none">
     <input id="logPass" type="password" placeholder="Password" class="w-full mt-3 p-3.5 rounded-xl bg-black/50 border border-white/10 text-sm outline-none">
     <button onclick="doLogin()" class="w-full mt-5 bg-white text-black py-3.5 rounded-xl font-bold">Login Now</button>
-    <p class="text-center text-[11px] opacity-50 mt-3">Or login with token</p>
-    <input id="tokenInput" placeholder="Paste Deriv API Token" class="w-full mt-3 p-3.5 rounded-xl bg-black/50 border border-white/10 text-sm outline-none">
-    <button onclick="loginWithToken()" class="w-full mt-3 glass py-3 rounded-xl text-sm font-bold">Connect with Token</button>
   </div>
 </div>
 
@@ -78,83 +64,58 @@ body{font-family:Inter,sans-serif;background:#070d1e;color:white}
   <div class="inline-flex glass px-4 py-1.5 rounded-full text-[11px]">⚡ Your connected trading workspace</div>
   <h1 class="mt-6 text-[48px] md:text-[68px] font-black leading-[0.85]">Trade smarter,<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-violet-400">not harder</span></h1>
   <p class="mt-4 opacity-60 max-w-md mx-auto">Automate repetitive strategies while keeping your session limits in view.</p>
-  <div class="mt-8 flex justify-center gap-3 flex-wrap">
-    <button onclick="openRegister()" class="glow-btn px-8 py-3.5 rounded-full font-bold">Start Trading Now →</button>
-    <button onclick="openLogin()" class="glass px-7 py-3.5 rounded-full font-bold">Existing Account Login</button>
-  </div>
+  <div class="mt-8 flex justify-center gap-3 flex-wrap"><button onclick="openRegister()" class="glow-btn px-8 py-3.5 rounded-full font-bold">Start Trading Now →</button><button onclick="openLogin()" class="glass px-7 py-3.5 rounded-full font-bold">Existing Account Login</button></div>
 </section>
 
 <section class="px-6 max-w-5xl mx-auto grid md:grid-cols-2 gap-4 pb-20">
-  <div class="glass rounded-3xl p-6"><h3 class="font-bold">🤖 AI-Powered Trading Bots - 85</h3><p class="text-xs opacity-60 mt-2">Configure strategies, inspect logic</p></div>
-  <div class="glass rounded-3xl p-6"><h3 class="font-bold">📊 Real-Time Analysis - 5 Views</h3><p class="text-xs opacity-60 mt-2">Charts, digits, market history</p></div>
-  <div class="glass rounded-3xl p-6"><h3 class="font-bold">Copy Trading Network</h3><p class="text-xs opacity-60 mt-2">Authorized accounts only</p></div>
-  <div class="glass rounded-3xl p-6"><h3 class="font-bold">Risk Management</h3><p class="text-xs opacity-60 mt-2">Stop-loss, take-profit, stake</p></div>
+  <button onclick="openBots()" class="text-left glass rounded-3xl p-6 hover:bg-white/10 active:scale-[0.98] transition"><h3 class="font-bold">🤖 AI-Powered Trading Bots - 85</h3><p class="text-xs opacity-60 mt-2">Configure strategies, inspect logic →</p></button>
+  <button onclick="openAnalysis()" class="text-left glass rounded-3xl p-6 hover:bg-white/10 active:scale-[0.98] transition"><h3 class="font-bold">📊 Real-Time Analysis - 5 Views</h3><p class="text-xs opacity-60 mt-2">Charts, digits, market history →</p></button>
+  <button onclick="openCopy()" class="text-left glass rounded-3xl p-6 hover:bg-white/10 active:scale-[0.98] transition"><h3 class="font-bold">👥 Copy Trading Network</h3><p class="text-xs opacity-60 mt-2">Authorized accounts only →</p></button>
+  <button onclick="openRisk()" class="text-left glass rounded-3xl p-6 hover:bg-white/10 active:scale-[0.98] transition"><h3 class="font-bold">🛡️ Risk Management</h3><p class="text-xs opacity-60 mt-2">Stop-loss, take-profit, stake →</p></button>
 </section>
 </div>
 
 <script>
 const APP_ID = 1089;
 let count = 1;
-const bar = document.getElementById('bar');
-const pct = document.getElementById('pct');
-const statusText = document.getElementById('statusText');
-const loader = document.getElementById('loader');
-const mainSite = document.getElementById('mainSite');
-const enterBtn = document.getElementById('enterBtn');
-
-const messages = ["Initializing workspace...","Connecting to Deriv cluster...","Loading trading bots...","Fetching market data...","Securing connection...","Ready to trade!"]
-
+const bar = document.getElementById('bar'), pct = document.getElementById('pct'), statusText = document.getElementById('statusText'), loader = document.getElementById('loader'), mainSite = document.getElementById('mainSite'), enterBtn = document.getElementById('enterBtn');
+const messages = ["Initializing workspace...","Connecting to Nixquant secure server...","Loading 85 trading bots...","Fetching market data...","Securing your session...","Ready to trade!"]
 let timer = setInterval(()=>{
-  count++;
-  bar.style.width = count + '%';
-  pct.innerText = count + '%';
+  count++; bar.style.width = count + '%'; pct.innerText = count + '%';
   if(count % 20 == 0){ statusText.innerText = messages[Math.floor(count/20)] }
-
-  if(count >= 100){
-    clearInterval(timer);
-    statusText.innerText = "Workspace Connected! Welcome 🎉";
-    bar.style.background = "#10b981";
-    enterBtn.classList.remove('hidden');
-    // Auto enter after 1 sec
-    setTimeout(()=>{
-      loader.style.display='none';
-      mainSite.classList.remove('hidden');
-    },1200);
-  }
-}, 35); // Speed ya loader
-
-enterBtn.onclick = ()=>{
-  loader.style.display='none';
-  mainSite.classList.remove('hidden');
-}
-
+  if(count >= 100){ clearInterval(timer); statusText.innerText = "Workspace Connected! Welcome 🎉"; bar.style.background = "#10b981"; enterBtn.classList.remove('hidden'); setTimeout(()=>{ loader.style.display='none'; mainSite.classList.remove('hidden'); },800); }
+}, 35);
+enterBtn.onclick = ()=>{ loader.style.display='none'; mainSite.classList.remove('hidden'); }
+function openMenu(){document.getElementById('menuDrawer').classList.remove('hidden')}function closeMenu(){document.getElementById('menuDrawer').classList.add('hidden')}
 function openRegister(){ document.getElementById('registerModal').classList.remove('hidden'); document.getElementById('registerModal').classList.add('flex'); }
-function openLogin(){ document.getElementById('loginModal').classList.remove('hidden'); document.getElementById('loginModal').classList.add('flex'); }
+function openLogin(){ closeModals(); document.getElementById('loginModal').classList.remove('hidden'); document.getElementById('loginModal').classList.add('flex'); }
 function closeModals(){ document.getElementById('registerModal').classList.add('hidden'); document.getElementById('loginModal').classList.add('hidden'); }
+function openSettings(){ closeMenu(); alert("⚙️ Settings - Hapa Sir Nick ata-manage App ID 1089, bots, na users wa Nixquant."); }
 
+// FIXED FUNCTIONS - NO DERIV REDIRECT
 function doRegister(){
-  const name=document.getElementById('regName').value, email=document.getElementById('regEmail').value, pass=document.getElementById('regPass').value;
+  const name=document.getElementById('regName').value.trim(), email=document.getElementById('regEmail').value.trim(), pass=document.getElementById('regPass').value;
   if(!name || !email || !pass){ alert('Jaza kila kitu msee!'); return }
+  let visitors = JSON.parse(localStorage.getItem('nix_visitors')||'[]');
+  visitors.push({name, email, page:'register', time:new Date().toISOString()});
+  localStorage.setItem('nix_visitors', JSON.stringify(visitors));
   localStorage.setItem('nix_user', JSON.stringify({name,email}));
-  alert('Account Created! Redirecting to Deriv...');
-  loginDeriv();
+  closeModals();
+  alert('✅ Welcome to Nixquant Markets, ' + name + '! Account yako imeundwa. You are now in your trading workspace.');
 }
 function doLogin(){
-  const email=document.getElementById('logEmail').value, pass=document.getElementById('logPass').value;
+  const email=document.getElementById('logEmail').value.trim(), pass=document.getElementById('logPass').value.trim();
   if(!email || !pass){ alert('Weka email na password'); return }
-  alert('Logged In! Connecting...');
-  loginDeriv();
+  localStorage.setItem('nix_user', JSON.stringify({email}));
+  closeModals();
+  alert('✅ Logged In! Welcome back to Nixquant Markets.');
 }
-function loginDeriv(){
-  window.location.href = `https://oauth.deriv.com/oauth2/authorize?app_id=${APP_ID}`;
-}
-function loginWithToken(){
-  const t=document.getElementById('tokenInput').value.trim();
-  if(t.length<15){ alert('Token ni fupi msee'); return }
-  localStorage.setItem('deriv_token', t);
-  alert('Token Connected! Going to Dashboard...');
-  window.location.href = '/dashboard.html';
-}
+
+// CARDS NOW WORK WHEN CLICKED
+function openBots(){ closeMenu(); alert("🤖 AI Bots 85 - Hapa ndio user ataona bots zote za Nixquant. Unaweza ku-add page ya bots hapa."); }
+function openAnalysis(){ closeMenu(); alert("📊 Real-Time Analysis - Charts na market views za Nixquant zitafunguka hapa."); }
+function openCopy(){ alert("👥 Copy Trading Network - Top traders wa Nixquant wataonekana hapa."); }
+function openRisk(){ alert("🛡️ Risk Management - Stop-loss, Take-profit settings za Nixquant."); }
 </script>
 </body>
 </html>
